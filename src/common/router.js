@@ -1,13 +1,33 @@
-import { createAppContainer, createStackNavigator } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import Patients from '../screens/Patients';
 import Rooms from '../screens/Rooms';
+import { COLORS } from '../styles/colors';
+import Icon from 'react-native-vector-icons/Ionicons';
+import React, { Component } from 'react';
 
-const MainNavigator = createStackNavigator(
+const MainNavigator = createMaterialBottomTabNavigator(
     {
-        Rooms: Rooms
+        Rooms: Rooms,
+        Patients: Patients
     },
     {
-        initialRouteName: 'Rooms',
-        headerMode: 'none'
+        defaultNavigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, horizontal, tintColor }) => {
+                const { routeName } = navigation.state;
+                let iconName;
+                if (routeName === 'Rooms') {
+                    iconName = `md-bed`;
+                } else if (routeName === 'Patients') {
+                    iconName = `md-person`;
+                }
+                return <Icon name={iconName} size={25} color={tintColor} />;
+            }
+        }),
+        tabBarOptions: {
+            activeTintColor: COLORS.black,
+            inactiveTintColor: COLORS.grey
+        }
     }
 );
 

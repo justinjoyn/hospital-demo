@@ -12,8 +12,8 @@ const theme = {
     ...DefaultTheme,
     dark: false,
     colors: {
-        primary: COLORS.black,
-        accent: COLORS.white,
+        primary: COLORS.white,
+        accent: COLORS.black,
         background: COLORS.white,
         text: COLORS.black
     },
