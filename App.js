@@ -1,49 +1,42 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { Component } from 'react';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import Router from './src/common/router';
+import Store from './src/common/store';
+import FullscreenLoader from './src/components/FullscreenLoader';
+import { FONTS } from './src/styles/fonts';
+import { COLORS } from './src/styles/colors';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+const theme = {
+    ...DefaultTheme,
+    dark: false,
+    colors: {
+        primary: COLORS.black,
+        accent: COLORS.white,
+        background: COLORS.white,
+        text: COLORS.black
+    },
+    fonts: {
+        regular: FONTS.primary_bold,
+        medium: FONTS.primary_regular,
+        light: FONTS.primary_regular,
+        thin: FONTS.primary_regular
+    }
+};
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
+class App extends Component {
+    render() {
+        return (
+            <Provider store={Store.store}>
+                <PersistGate loading={<FullscreenLoader />} persistor={Store.persistor}>
+                    <PaperProvider theme={theme}>
+                        <Router />
+                    </PaperProvider>
+                </PersistGate>
+            </Provider>
+        );
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+export default App;

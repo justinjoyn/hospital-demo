@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>925256425390-bgqn7ekpc3privngq8pumimv55b9hd8t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.925256425390-bgqn7ekpc3privngq8pumimv55b9hd8t</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAJj6PjSlU2xScbdJoyqbaaQ62PaEA835s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>925256425390</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hospital</string>
+	<key>PROJECT_ID</key>
+	<string>hospital-demo-104c7</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hospital-demo-104c7.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:925256425390:ios:acc91e3d8d5792ad</string>
+	<key>DATABASE_URL</key>
+	<string>https://hospital-demo-104c7.firebaseio.com</string>
+</dict>
+</plist>
