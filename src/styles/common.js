@@ -11,5 +11,11 @@ export const common = StyleSheet.create({
     paddedContainer: {
         flex: 1,
         padding: 20
-    }
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+      },
 });

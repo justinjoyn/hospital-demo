@@ -1,10 +1,10 @@
+import React from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { createAppContainer } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import Patients from '../screens/Patients';
 import Rooms from '../screens/Rooms';
 import { COLORS } from '../styles/colors';
-import Icon from 'react-native-vector-icons/Ionicons';
-import React, { Component } from 'react';
 
 const MainNavigator = createMaterialBottomTabNavigator(
     {
@@ -17,9 +17,9 @@ const MainNavigator = createMaterialBottomTabNavigator(
                 const { routeName } = navigation.state;
                 let iconName;
                 if (routeName === 'Rooms') {
-                    iconName = `md-bed`;
+                    iconName = `hotel`;
                 } else if (routeName === 'Patients') {
-                    iconName = `md-person`;
+                    iconName = `person`;
                 }
                 return <Icon name={iconName} size={25} color={tintColor} />;
             }

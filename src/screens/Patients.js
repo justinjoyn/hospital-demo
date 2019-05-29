@@ -4,6 +4,7 @@ import { Appbar } from 'react-native-paper';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import AddFAB from '../components/AddFAB';
 import { COLORS } from '../styles/colors';
 import { common } from '../styles/common';
 
@@ -26,6 +27,7 @@ class Patients extends Component {
                 <Appbar>
                     <Appbar.Content title="Patients" subtitle="Select a patient to view details" />
                 </Appbar>
+                <AddFAB />
             </SafeAreaView>
         );
     }
