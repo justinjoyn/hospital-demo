@@ -92,7 +92,7 @@ class AddDoctorModal extends Component {
                         <Card.Title title="Add Doctor" subtitle="Provide the details" />
                         <Divider />
                         <ScrollView
-                            style={{ height: SCREEN_HEIGHT / 1.5 }}
+                            style={{ height: SCREEN_HEIGHT / 2 }}
                             keyboardShouldPersistTaps={'handled'}>
                             <Card.Content>
                                 <TextInput

@@ -28,21 +28,18 @@ class AddPatientModal extends Component {
         this.renderRooms = this.renderRooms.bind(this);
     }
 
-    add = async () => {
+    add() {
         const { reference, onAdd } = this.props;
         const { patientName, selectedRoom, selectedDoctor } = this.state;
         if (patientName === '' || !selectedRoom || !selectedDoctor) return;
-        let newPatientRef = await reference.add({
+        reference.add({
             name: patientName,
             room: selectedRoom.doc.ref,
             doctor: selectedDoctor.doc.ref
         });
-        selectedRoom.doc.ref.update({
-            patient: newPatientRef
-        });
         this.setState({ patientName: '', selectedRoom: null, selectedDoctor: null });
         onAdd();
-    };
+    }
 
     cancel() {
         const { onCancel } = this.props;
@@ -65,7 +62,7 @@ class AddPatientModal extends Component {
                     onPress={() => this.setState({ selectedDoctor: doctor })}
                     mode={'outlined'}
                     selected={isSelected}>
-                    {doctor.name}
+                    Dr. {doctor.name}
                 </Chip>
             );
         });
@@ -87,7 +84,7 @@ class AddPatientModal extends Component {
                     onPress={() => this.setState({ selectedRoom: room })}
                     mode={'outlined'}
                     selected={isSelected}>
-                    {room.number}
+                    Room #{room.number}
                 </Chip>
             );
         });
@@ -120,7 +117,7 @@ class AddPatientModal extends Component {
                         <Card.Title title="Add Patient" subtitle="Provide the details" />
                         <Divider />
                         <ScrollView
-                            style={{ height: SCREEN_HEIGHT / 1.5 }}
+                            style={{ height: SCREEN_HEIGHT / 2 }}
                             keyboardShouldPersistTaps={'handled'}>
                             <Card.Content>
                                 <TextInput

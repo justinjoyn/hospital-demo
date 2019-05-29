@@ -11,12 +11,14 @@ import AddDoctorModal from '../components/AddDoctorModal';
 import AddFAB from '../components/AddFAB';
 import AddPatientModal from '../components/AddPatientModal';
 import AddRoomModal from '../components/AddRoomModal';
+import RoomDetailsModal from '../components/RoomDetailsModal';
 import { setDepartments } from '../ducks/departments';
 import { setDoctors } from '../ducks/doctors';
 import { setPatients } from '../ducks/patients';
 import { setRooms } from '../ducks/rooms';
 import { COLORS } from '../styles/colors';
 import { common } from '../styles/common';
+import _ from 'lodash';
 
 class Rooms extends Component {
     constructor(props) {
@@ -32,10 +34,12 @@ class Rooms extends Component {
             addPatientModalVisible: false,
             addDoctorModalVisible: false,
             addDepartmentVisible: false,
+            roomDetailsModalVisible: false,
             rooms: [],
             doctors: [],
             departments: [],
-            patients: []
+            patients: [],
+            selectedRoom: null
         };
 
         //Bind to instance
@@ -43,6 +47,7 @@ class Rooms extends Component {
         this.onPatientsUpdate = this.onPatientsUpdate.bind(this);
         this.onDoctorsUpdate = this.onDoctorsUpdate.bind(this);
         this.onDepartmentsUpdate = this.onDepartmentsUpdate.bind(this);
+        this.renderRoom = this.renderRoom.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -90,7 +95,23 @@ class Rooms extends Component {
         log('Patients', 'green', patients);
         this.setState({ patients: patients });
         this.props.setPatients(patients);
+        this.processPatients(patients);
     }
+
+    processPatients = async data => {
+        let patients = data;
+        for (let i = 0; i < patients.length; i++) {
+            let room = await patients[i].room.get();
+            let doctor = await patients[i].doctor.get();
+            let department = await doctor.data().department.get();
+
+            patients[i].parsedRoom = room.data();
+            patients[i].parsedDoctor = doctor.data();
+            patients[i].parsedDepartment = department.data();
+        }
+        this.setState({ patients: patients });
+        this.props.setPatients(patients);
+    };
 
     onDoctorsUpdate(querySnapshot) {
         const doctors = [];
@@ -114,11 +135,31 @@ class Rooms extends Component {
         this.props.setDepartments(departments);
     }
 
+    getPatientCount(room) {
+        const { patients } = this.props;
+        let count = 0;
+        patients.map(patient => {
+            const patientRoom = _.get(patient, 'room.id', null);
+            if (patientRoom === room.key) count++;
+        });
+        return count;
+    }
+
     renderRoom({ item }) {
+        const patientCount = this.getPatientCount(item);
         return (
             <List.Item
+                onPress={() =>
+                    patientCount !== 0
+                        ? this.setState({ selectedRoom: item, roomDetailsModalVisible: true })
+                        : null
+                }
                 title={`Room #${item.number}`}
-                description={item.patient ? 'This room is occupied' : 'This room is vacant'}
+                description={
+                    patientCount === 0
+                        ? 'This room is vacant'
+                        : `This room has ${patientCount} patients`
+                }
                 left={props => <List.Icon {...props} icon="hotel" />}
             />
         );
@@ -129,9 +170,11 @@ class Rooms extends Component {
             addRoomModalVisible,
             addPatientModalVisible,
             addDoctorModalVisible,
-            addDepartmentVisible
+            addDepartmentVisible,
+            roomDetailsModalVisible,
+            selectedRoom
         } = this.state;
-        const { rooms, departments, doctors } = this.props;
+        const { rooms, departments, doctors, patients } = this.props;
         return (
             <SafeAreaView style={common.container}>
                 <StatusBar backgroundColor={COLORS.white} barStyle={'dark-content'} />
@@ -142,6 +185,7 @@ class Rooms extends Component {
                     data={rooms}
                     renderItem={this.renderRoom}
                     keyboardShouldPersistTaps={'handled'}
+                    extraData={patients}
                 />
                 <AddFAB
                     addRoom={() => this.setState({ addRoomModalVisible: true })}
@@ -175,6 +219,14 @@ class Rooms extends Component {
                     visible={addDepartmentVisible}
                     onCancel={() => this.setState({ addDepartmentVisible: false })}
                     onAdd={() => this.setState({ addDepartmentVisible: false })}
+                />
+                <RoomDetailsModal
+                    room={selectedRoom}
+                    patients={patients}
+                    visible={roomDetailsModalVisible}
+                    onClose={() =>
+                        this.setState({ roomDetailsModalVisible: false, selectedRoom: null })
+                    }
                 />
             </SafeAreaView>
         );
