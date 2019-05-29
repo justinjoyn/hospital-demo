@@ -11,20 +11,28 @@ class AddRoomModal extends Component {
         this.state = {
             roomNo: ''
         };
-        this.addRoom = this.addRoom.bind(this);
+        this.add = this.add.bind(this);
+        this.cancel = this.cancel.bind(this);
     }
 
-    addRoom() {
+    add() {
         const { reference, onAdd } = this.props;
         const { roomNo } = this.state;
         reference.add({
             number: roomNo
         });
+        this.setState({ roomNo: '' });
         onAdd();
     }
 
+    cancel() {
+        const { onCancel } = this.props;
+        this.setState({ roomNo: '' });
+        onCancel();
+    }
+
     render() {
-        const { onCancel, visible } = this.props;
+        const { visible } = this.props;
         const { roomNo } = this.state;
         return (
             <Portal>
@@ -39,14 +47,14 @@ class AddRoomModal extends Component {
                         }
                     }}
                     visible={visible}
-                    onDismiss={onCancel}>
+                    onDismiss={this.cancel}>
                     <Card
                         theme={{
                             colors: {
                                 surface: COLORS.white
                             }
                         }}>
-                        <Card.Title title="Add Room" subtitle="Enter the room number" />
+                        <Card.Title title="Add Room" subtitle="Provide the details" />
                         <Divider />
                         <Card.Content>
                             <TextInput
@@ -65,11 +73,11 @@ class AddRoomModal extends Component {
                             }}>
                             <Button
                                 theme={{ colors: { primary: COLORS.black } }}
-                                onPress={onCancel}>
+                                onPress={this.cancel}>
                                 Cancel
                             </Button>
                             <Button
-                                onPress={this.addRoom}
+                                onPress={this.add}
                                 theme={{ colors: { primary: COLORS.black } }}>
                                 Add
                             </Button>

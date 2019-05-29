@@ -11,20 +11,28 @@ class AddDepartmentModal extends Component {
         this.state = {
             departmentName: ''
         };
-        this.addDepartment = this.addDepartment.bind(this);
+        this.add = this.add.bind(this);
+        this.cancel = this.cancel.bind(this);
     }
 
-    addDepartment() {
+    add() {
         const { reference, onAdd } = this.props;
         const { departmentName } = this.state;
         reference.add({
             name: departmentName
         });
+        this.setState({ departmentName: '' });
         onAdd();
     }
 
+    cancel() {
+        const { onCancel } = this.props;
+        this.setState({ departmentName: '' });
+        onCancel();
+    }
+
     render() {
-        const { onCancel, visible } = this.props;
+        const { visible } = this.props;
         const { departmentName } = this.state;
         return (
             <Portal>
@@ -39,14 +47,14 @@ class AddDepartmentModal extends Component {
                         }
                     }}
                     visible={visible}
-                    onDismiss={onCancel}>
+                    onDismiss={this.cancel}>
                     <Card
                         theme={{
                             colors: {
                                 surface: COLORS.white
                             }
                         }}>
-                        <Card.Title title="Add Departent" subtitle="Enter the department name" />
+                        <Card.Title title="Add Departent" subtitle="Provide the details" />
                         <Divider />
                         <Card.Content>
                             <TextInput
@@ -65,11 +73,11 @@ class AddDepartmentModal extends Component {
                             }}>
                             <Button
                                 theme={{ colors: { primary: COLORS.black } }}
-                                onPress={onCancel}>
+                                onPress={this.cancel}>
                                 Cancel
                             </Button>
                             <Button
-                                onPress={this.addDepartment}
+                                onPress={this.add}
                                 theme={{ colors: { primary: COLORS.black } }}>
                                 Add
                             </Button>
