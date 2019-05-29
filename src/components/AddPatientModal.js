@@ -3,29 +3,23 @@ import { Dimensions } from 'react-native';
 import { Button, Card, Divider, Modal, Portal, TextInput } from 'react-native-paper';
 import { COLORS } from '../styles/colors';
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-class AddRoomModal extends Component {
+class AddPatientModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roomNo: ''
+            patientName: '',
+            department: null,
+            room: null,
+            doctor: null
         };
-        this.addRoom = this.addRoom.bind(this);
-    }
-
-    addRoom() {
-        const { reference, onAdd } = this.props;
-        const { roomNo } = this.state;
-        reference.add({
-            number: roomNo
-        });
-        onAdd();
     }
 
     render() {
-        const { onCancel, visible } = this.props;
-        const { roomNo } = this.state;
+        const { onAdd, onCancel, visible } = this.props;
+        const { patientName, department, room, doctor } = this.state;
         return (
             <Portal>
                 <Modal
@@ -46,14 +40,14 @@ class AddRoomModal extends Component {
                                 surface: COLORS.white
                             }
                         }}>
-                        <Card.Title title="Add Room" subtitle="Enter the room number" />
+                        <Card.Title title="Add Patient" subtitle="Enter the patient name" />
                         <Divider />
                         <Card.Content>
                             <TextInput
-                                label="Room No"
-                                value={roomNo}
+                                label="Patient Name"
+                                value={patientName}
                                 mode={'outlined'}
-                                onChangeText={text => this.setState({ roomNo: text })}
+                                onChangeText={text => this.setState({ patientName: text })}
                                 style={{ marginBottom: 10 }}
                                 theme={{ colors: { primary: COLORS.black } }}
                             />
@@ -69,7 +63,7 @@ class AddRoomModal extends Component {
                                 Cancel
                             </Button>
                             <Button
-                                onPress={this.addRoom}
+                                onPress={() => onAdd(patientName, department, room, doctor)}
                                 theme={{ colors: { primary: COLORS.black } }}>
                                 Add
                             </Button>
@@ -81,4 +75,4 @@ class AddRoomModal extends Component {
     }
 }
 
-export default AddRoomModal;
+export default AddPatientModal;

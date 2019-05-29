@@ -13,6 +13,13 @@ class AddFAB extends Component {
         const { addRoom, addPatient, addDoctor, addDepartment } = this.props;
         return (
             <FAB.Group
+                theme={{
+                    colors: {
+                        primary: COLORS.black,
+                        accent: COLORS.white,
+                        surface: COLORS.white
+                    }
+                }}
                 open={this.state.fabOpen}
                 icon={this.state.fabOpen ? 'close' : 'add'}
                 actions={[
@@ -20,25 +27,25 @@ class AddFAB extends Component {
                         icon: 'hotel',
                         label: 'Room',
                         onPress: addRoom,
-                        style: { backgroundColor: COLORS.black }
+                        style: { backgroundColor: COLORS.white }
                     },
                     {
                         icon: 'person',
                         label: 'Patient',
                         onPress: addPatient,
-                        style: { backgroundColor: COLORS.black }
+                        style: { backgroundColor: COLORS.white }
                     },
                     {
                         icon: 'perm-identity',
                         label: 'Doctor',
                         onPress: addDoctor,
-                        style: { backgroundColor: COLORS.black }
+                        style: { backgroundColor: COLORS.white }
                     },
                     {
                         icon: 'business',
                         label: 'Department',
                         onPress: addDepartment,
-                        style: { backgroundColor: COLORS.black }
+                        style: { backgroundColor: COLORS.white }
                     }
                 ]}
                 onStateChange={({ open }) => this.setState({ fabOpen: open })}

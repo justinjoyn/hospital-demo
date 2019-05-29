@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 import Router from './src/common/router';
-import Store from './src/common/store';
-import FullscreenLoader from './src/components/FullscreenLoader';
-import { FONTS } from './src/styles/fonts';
+import store from './src/common/store';
 import { COLORS } from './src/styles/colors';
+import { FONTS } from './src/styles/fonts';
 
 const theme = {
     ...DefaultTheme,
@@ -26,14 +24,17 @@ const theme = {
 };
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        console.disableYellowBox = true;
+    }
+
     render() {
         return (
-            <Provider store={Store.store}>
-                <PersistGate loading={<FullscreenLoader />} persistor={Store.persistor}>
-                    <PaperProvider theme={theme}>
-                        <Router />
-                    </PaperProvider>
-                </PersistGate>
+            <Provider store={store}>
+                <PaperProvider theme={theme}>
+                    <Router />
+                </PaperProvider>
             </Provider>
         );
     }

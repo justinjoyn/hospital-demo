@@ -3,7 +3,6 @@ import { Dimensions } from 'react-native';
 import { Button, Card, Divider, Modal, Portal, TextInput } from 'react-native-paper';
 import { COLORS } from '../styles/colors';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class AddDepartmentModal extends Component {
@@ -12,10 +11,20 @@ class AddDepartmentModal extends Component {
         this.state = {
             departmentName: ''
         };
+        this.addDepartment = this.addDepartment.bind(this);
+    }
+
+    addDepartment() {
+        const { reference, onAdd } = this.props;
+        const { departmentName } = this.state;
+        reference.add({
+            name: departmentName
+        });
+        onAdd();
     }
 
     render() {
-        const { onAdd, onCancel, visible } = this.props;
+        const { onCancel, visible } = this.props;
         const { departmentName } = this.state;
         return (
             <Portal>
@@ -60,7 +69,7 @@ class AddDepartmentModal extends Component {
                                 Cancel
                             </Button>
                             <Button
-                                onPress={() => onAdd(departmentName)}
+                                onPress={this.addDepartment}
                                 theme={{ colors: { primary: COLORS.black } }}>
                                 Add
                             </Button>

@@ -1,10 +1,10 @@
 // Actions
-const SET_ROOMS = 'hospital/rooms/SET_ROOMS';
+const SET_PATIENTS = 'hospital/patients/SET_PATIENTS';
 
 // Reducer
 export default function reducer(state = { data: [] }, action = {}) {
     switch (action.type) {
-        case SET_ROOMS:
+        case SET_PATIENTS:
             return {
                 ...state,
                 data: action.data
@@ -15,6 +15,6 @@ export default function reducer(state = { data: [] }, action = {}) {
 }
 
 // Action Creators
-export function setRooms(data) {
-    return { type: SET_ROOMS, data };
+export function setPatients(data) {
+    return { type: SET_PATIENTS, data };
 }

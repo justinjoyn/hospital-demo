@@ -5,27 +5,27 @@ import { COLORS } from '../styles/colors';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-class AddRoomModal extends Component {
+class AddDoctorModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roomNo: ''
+            doctorName: ''
         };
-        this.addRoom = this.addRoom.bind(this);
+        this.addDoctor = this.addDoctor.bind(this);
     }
 
-    addRoom() {
+    addDoctor() {
         const { reference, onAdd } = this.props;
-        const { roomNo } = this.state;
+        const { doctorName } = this.state;
         reference.add({
-            number: roomNo
+            name: doctorName
         });
         onAdd();
     }
 
     render() {
         const { onCancel, visible } = this.props;
-        const { roomNo } = this.state;
+        const { doctorName } = this.state;
         return (
             <Portal>
                 <Modal
@@ -46,14 +46,14 @@ class AddRoomModal extends Component {
                                 surface: COLORS.white
                             }
                         }}>
-                        <Card.Title title="Add Room" subtitle="Enter the room number" />
+                        <Card.Title title="Add Doctor" subtitle="Enter the doctor name" />
                         <Divider />
                         <Card.Content>
                             <TextInput
-                                label="Room No"
-                                value={roomNo}
+                                label="Doctor Name"
+                                value={doctorName}
                                 mode={'outlined'}
-                                onChangeText={text => this.setState({ roomNo: text })}
+                                onChangeText={text => this.setState({ doctorName: text })}
                                 style={{ marginBottom: 10 }}
                                 theme={{ colors: { primary: COLORS.black } }}
                             />
@@ -69,7 +69,7 @@ class AddRoomModal extends Component {
                                 Cancel
                             </Button>
                             <Button
-                                onPress={this.addRoom}
+                                onPress={this.addDoctor}
                                 theme={{ colors: { primary: COLORS.black } }}>
                                 Add
                             </Button>
@@ -81,4 +81,4 @@ class AddRoomModal extends Component {
     }
 }
 
-export default AddRoomModal;
+export default AddDoctorModal;
