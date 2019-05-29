@@ -6,41 +6,17 @@ import { COLORS } from '../styles/colors';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-class RoomDetailsModal extends Component {
+class PatientDetailsModal extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            patients: []
-        };
-    }
-
-    static getDerivedStateFromProps(props) {
-        const { patients, room } = props;
-        if (!room || !patients) return null;
-        const filteredPatients = patients.filter(patient => {
-            const patientRoom = _.get(patient, 'room.id', null);
-            return patientRoom === room.key;
-        });
-        return {
-            patients: filteredPatients
-        };
-    }
-
-    renderPatient({ item }) {
-        const department = _.get(item, 'parsedDepartment.name', '');
-        return (
-            <List.Item
-                title={item.name}
-                description={department}
-                left={props => <List.Icon {...props} icon="person" />}
-            />
-        );
     }
 
     render() {
-        const { visible, room, onClose } = this.props;
-        const { patients } = this.state;
-        if (!room) return null;
+        const { visible, patient, onClose } = this.props;
+        if (!patient) return null;
+        const department = _.get(patient, 'parsedDepartment.name', '');
+        const doctor = _.get(patient, 'parsedDoctor.name', '');
+        const room = _.get(patient, 'parsedRoom.number', '');
         return (
             <Portal>
                 <Modal
@@ -61,18 +37,18 @@ class RoomDetailsModal extends Component {
                                 surface: COLORS.white
                             }
                         }}>
-                        <Card.Title
-                            title={`Room #${room.number}`}
-                            subtitle={`This room has ${patients.length} patients`}
-                        />
+                        <Card.Title title={patient.name} subtitle={`Room #${room}`} />
                         <Divider />
                         <Card.Content>
-                            <Subheading>Patients</Subheading>
-                            <FlatList
-                                style={{ height: SCREEN_HEIGHT / 3 }}
-                                data={patients}
-                                renderItem={this.renderPatient}
-                                keyboardShouldPersistTaps={'handled'}
+                            <List.Item
+                                title={`Dr. ${doctor}`}
+                                description={'Attending doctor'}
+                                left={props => <List.Icon {...props} icon="perm-identity" />}
+                            />
+                            <List.Item
+                                title={department}
+                                description={'Department'}
+                                left={props => <List.Icon {...props} icon="business" />}
                             />
                         </Card.Content>
                         <Card.Actions
@@ -91,4 +67,4 @@ class RoomDetailsModal extends Component {
     }
 }
 
-export default RoomDetailsModal;
+export default PatientDetailsModal;

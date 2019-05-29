@@ -1,13 +1,16 @@
+import _ from 'lodash';
+
 // Actions
 const SET_PATIENTS = 'hospital/patients/SET_PATIENTS';
 
 // Reducer
-export default function reducer(state = { data: [] }, action = {}) {
+export default function reducer(state = { data: [], updated: 0 }, action = {}) {
     switch (action.type) {
         case SET_PATIENTS:
             return {
                 ...state,
-                data: action.data
+                data: action.data,
+                updated: _.now()
             };
         default:
             return state;

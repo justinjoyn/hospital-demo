@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { FlatList, StatusBar } from 'react-native';
 import firebase from 'react-native-firebase';
@@ -11,6 +12,7 @@ import AddDoctorModal from '../components/AddDoctorModal';
 import AddFAB from '../components/AddFAB';
 import AddPatientModal from '../components/AddPatientModal';
 import AddRoomModal from '../components/AddRoomModal';
+import PatientDetailsModal from '../components/PatientDetailsModal';
 import { COLORS } from '../styles/colors';
 import { common } from '../styles/common';
 
@@ -27,19 +29,27 @@ class Patients extends Component {
             addRoomModalVisible: false,
             addPatientModalVisible: false,
             addDoctorModalVisible: false,
-            addDepartmentVisible: false
+            addDepartmentVisible: false,
+            patientDetailsModalVisible: false,
+            selectedPatient: null
         };
-    }
 
-    static getDerivedStateFromProps(props, state) {
-        return null;
+        this.renderPatient = this.renderPatient.bind(this);
     }
-
-    componentDidMount() {}
 
     renderPatient({ item }) {
+        const roomNumber = _.get(item, 'parsedRoom.number', null);
         return (
-            <List.Item title={item.name} left={props => <List.Icon {...props} icon="person" />} />
+            <List.Item
+                onPress={() =>
+                    roomNumber
+                        ? this.setState({ selectedPatient: item, patientDetailsModalVisible: true })
+                        : null
+                }
+                title={item.name}
+                description={roomNumber ? `Room #${roomNumber}` : ''}
+                left={props => <List.Icon {...props} icon="person" />}
+            />
         );
     }
 
@@ -48,9 +58,11 @@ class Patients extends Component {
             addRoomModalVisible,
             addPatientModalVisible,
             addDoctorModalVisible,
-            addDepartmentVisible
+            addDepartmentVisible,
+            patientDetailsModalVisible,
+            selectedPatient
         } = this.state;
-        const { rooms, departments, doctors, patients } = this.props;
+        const { rooms, departments, doctors, patients, updated } = this.props;
         return (
             <SafeAreaView style={common.container}>
                 <StatusBar backgroundColor={COLORS.white} barStyle={'dark-content'} />
@@ -59,6 +71,7 @@ class Patients extends Component {
                 </Appbar>
                 <FlatList
                     data={patients}
+                    extraData={updated}
                     renderItem={this.renderPatient}
                     keyboardShouldPersistTaps={'handled'}
                 />
@@ -95,20 +108,28 @@ class Patients extends Component {
                     onCancel={() => this.setState({ addDepartmentVisible: false })}
                     onAdd={() => this.setState({ addDepartmentVisible: false })}
                 />
+                <PatientDetailsModal
+                    patient={selectedPatient}
+                    visible={patientDetailsModalVisible}
+                    onClose={() =>
+                        this.setState({ patientDetailsModalVisible: false, selectedPatient: null })
+                    }
+                />
             </SafeAreaView>
         );
     }
 }
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({}, dispatch);
+    return {};
 };
 
 const mapStateToProps = state => ({
     rooms: state.rooms.data,
     patients: state.patients.data,
     doctors: state.doctors.data,
-    departments: state.departments.data
+    departments: state.departments.data,
+    updated: state.patients.updated
 });
 
 export default connect(
