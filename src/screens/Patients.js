@@ -5,7 +5,6 @@ import firebase from 'react-native-firebase';
 import { Appbar, List } from 'react-native-paper';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { DEPARTMENTS, DOCTORS, PATIENTS, ROOMS } from '../common/constants';
 import AddDepartmentModal from '../components/AddDepartmentModal';
 import AddDoctorModal from '../components/AddDoctorModal';
@@ -47,7 +46,7 @@ class Patients extends Component {
                         : null
                 }
                 title={item.name}
-                description={roomNumber ? `Room #${roomNumber}` : ''}
+                description={roomNumber ? `Room #${roomNumber}` : 'Getting room info'}
                 left={props => <List.Icon {...props} icon="person" />}
             />
         );

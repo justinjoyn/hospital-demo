@@ -9,6 +9,7 @@ class AddFAB extends Component {
             fabOpen: false
         };
     }
+
     render() {
         const { addRoom, addPatient, addDoctor, addDepartment } = this.props;
         return (

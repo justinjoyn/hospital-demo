@@ -7,6 +7,7 @@ target 'hospital_demo' do
 
   # Pods for hospital_demo
   pod 'Firebase/Core', '~> 5.20.1'
+  pod 'Firebase/Firestore', '~> 5.20.1'
 
   target 'hospital_demoTests' do
     inherit! :search_paths
